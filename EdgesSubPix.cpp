@@ -267,6 +267,12 @@ void EdgesSubPix(Mat &gray, double alpha, int low, int high,
     int lowThresh = cvRound(scale * low);
     int highThresh = cvRound(scale * high);
     postCannyFilter(gray, dx, dy, lowThresh, highThresh, edge);
+
+    // contours in pixel precision
+    vector<vector<Point> > contoursInPixel;
+    findContours(edge, contoursInPixel, hierarchy, mode, CHAIN_APPROX_NONE);
+
+
 }
 
 void EdgesSubPix(Mat &gray, double alpha, int low, int high,
