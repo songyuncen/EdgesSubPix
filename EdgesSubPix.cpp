@@ -24,7 +24,7 @@ static void getCannyKernel(OutputArray _d, double alpha)
         kerF[r + x] = v;
         kerF[r - x] = -v;
     }
-    float scale = 1024 / sum;
+    float scale = 128 / sum;
     for (int i = 0; i < ksize; ++i)
     {
         kerF[i] *= scale;
@@ -38,6 +38,10 @@ static void postCannyFilter(const Mat &src, Mat &dx, Mat &dy, int low, int high,
 {
     ptrdiff_t mapstep = src.cols + 2;
     AutoBuffer<uchar> buffer((src.cols + 2)*(src.rows + 2) + mapstep * 3 * sizeof(int));
+
+    // L2Gradient comparison with square
+    high = high * high;
+    low = low * low;
 
     int* mag_buf[3];
     mag_buf[0] = (int*)(uchar*)buffer;
@@ -259,10 +263,10 @@ void EdgesSubPix(Mat &gray, double alpha, int low, int high,
 
     // non-maximum supression & hysteresis threshold
     Mat edge = Mat::zeros(gray.size(), CV_8UC1);
-    postCannyFilter(gray, dx, dy, low, high, edge);
-
-
-    imwrite("edge.tiff", edge);
+    double scale = 128.0;                          // sum of half Canny filter is 128
+    int lowThresh = cvRound(scale * low);
+    int highThresh = cvRound(scale * high);
+    postCannyFilter(gray, dx, dy, lowThresh, highThresh, edge);
 }
 
 void EdgesSubPix(Mat &gray, double alpha, int low, int high,

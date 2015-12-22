@@ -9,7 +9,7 @@ struct Contour
     std::vector<float> direction;
     std::vector<float> response;
 };
-
+// only 8-bit
 CV_EXPORTS void EdgesSubPix(cv::Mat &gray, double alpha, int low, int high, 
                            std::vector<Contour> &contours, cv::OutputArray hierarchy,
                            int mode, cv::Point2f offset = cv::Point2f());

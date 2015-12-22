@@ -8,8 +8,8 @@ int main(int argc, char *argv[])
 {
     const String keys =
                         "{help h usage ? |          | print this message            }"
-                        "{image i        |          | image for edge detection      }"
-                        "{output         |edge.tiff | image for draw contours       }"
+                        "{@image         |          | image for edge detection      }"
+                        "{@output        |edge.tiff | image for draw contours       }"
                         "{data           |p.txt     | edges data in txt format      }"
                         "{low            |40        | low threshold                 }"
                         "{high           |100       | high threshold                }"
@@ -30,23 +30,14 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    /*
-    if (!parser.has("image"))
+    if (!parser.has("@image"))
     {
         parser.printMessage();
         return 0;
     }
 
-    if (!parser.has("output"))
-    {
-        parser.printMessage();
-        return 0;
-    }
-    */
-
-    //String imageFile = parser.get<String>("image");
-    String imageFile = "d:\\work\\image\\5mm_rectify\\5mm_1.tif";
-    String outputFile = parser.get<String>("output");
+    String imageFile = parser.get<String>(0);
+    String outputFile = parser.get<String>("@output");
     int low = parser.get<int>("low");
     int high = parser.get<int>("high");
     double alpha = parser.get<double>("alpha");
