@@ -47,7 +47,7 @@ static void postCannyFilter(const Mat &src, Mat &dx, Mat &dy, int low, int high,
     mag_buf[0] = (int*)(uchar*)buffer;
     mag_buf[1] = mag_buf[0] + mapstep;
     mag_buf[2] = mag_buf[1] + mapstep;
-    memset(mag_buf[0], 0, /* cn* */mapstep*sizeof(int));
+    memset(mag_buf[0], 0, mapstep*sizeof(int));
 
     uchar* map = (uchar*)(mag_buf[2] + mapstep);
     memset(map, 1, mapstep);
@@ -157,7 +157,7 @@ static void postCannyFilter(const Mat &src, Mat &dx, Mat &dy, int low, int high,
         int prev_flag = 0;
         for (int j = 0; j < src.cols; j++)
         {
-#define CANNY_SHIFT 15
+            #define CANNY_SHIFT 15
             const int TG22 = (int)(0.4142135623730950488016887242097*(1 << CANNY_SHIFT) + 0.5);
 
             int m = _mag[j];
