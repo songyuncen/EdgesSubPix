@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
                         "{help h usage ? |          | print this message            }"
                         "{@image         |          | image for edge detection      }"
                         "{@output        |edge.tiff | image for draw contours       }"
-                        "{data           |p.txt     | edges data in txt format      }"
+                        "{data           |          | edges data in txt format      }"
                         "{low            |40        | low threshold                 }"
                         "{high           |100       | high threshold                }"
                         "{mode           |1         | same as cv::findContours      }"
@@ -47,6 +47,22 @@ int main(int argc, char *argv[])
     vector<Contour> contours;
     vector<Vec4i> hierarchy;
     EdgesSubPix(image, alpha, low, high, contours, hierarchy, mode);
+
+    if (parser.has("data"))
+    {
+        FileStorage fs(parser.get<String>("data"), FileStorage::WRITE | FileStorage::FORMAT_YAML);
+        fs << "contours" << "[";
+        for (size_t i = 0; i < contours.size(); ++i)
+        {
+            fs << "{:";
+            fs << "points" << contours[i].points;
+            fs << "response" << contours[i].response;
+            fs << "direction" << contours[i].direction;
+            fs << "}";
+        }
+        fs << "]";
+        fs.release();
+    }
 
     return 0;
 }
