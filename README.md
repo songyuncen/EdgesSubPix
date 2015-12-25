@@ -14,7 +14,8 @@ Sub-Pixel Edge Detection using OpenCV
 struct Contour
 {
     std::vector<cv::Point2f> points;  // edge location
-    std::vector<float> direction;     // direction of the gradient in edge point, starting from y axis, counter-clockwise
+    std::vector<float> direction;     // direction of the gradient in edge point, 
+                                      // starting from y axis, counter-clockwise
     std::vector<float> response;      // amptitude of the gradient in edge point
 };
 // gray             - only support 8-bit grayscale
