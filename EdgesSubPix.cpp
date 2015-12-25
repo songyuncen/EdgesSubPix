@@ -370,6 +370,9 @@ void extractSubPixPoints(Mat &dx, Mat &dy, vector<vector<Point> > &contoursInPix
     {
         vector<Point> &icontour = contoursInPixel[i];
         Contour &contour = contours[i];
+        contour.points.resize(icontour.size());
+        contour.response.resize(icontour.size());
+        contour.direction.resize(icontour.size());
 #if defined(_OPENMP) && defined(NDEBUG)
 #pragma omp parallel for
 #endif
@@ -400,9 +403,9 @@ void extractSubPixPoints(Mat &dx, Mat &dy, vector<vector<Point> > &contoursInPix
                 x += (float)px;
                 y += (float)py;
             }
-            contour.points.push_back(Point2f(x, y));
-            contour.response.push_back((float)(a[0] / scale));
-            contour.direction.push_back((float)vector2angle(ny, nx));
+            contour.points[j] = Point2f(x, y);
+            contour.response[j] = (float)(a[0] / scale);
+            contour.direction[j] = (float)vector2angle(ny, nx);
         }
     }
 }

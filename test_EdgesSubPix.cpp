@@ -1,4 +1,5 @@
 #include <opencv2/opencv.hpp>
+#include <opencv2/core/ocl.hpp>
 #include <iostream>
 #include "EdgesSubPix.h"
 using namespace cv;
@@ -6,6 +7,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
+    ocl::setUseOpenCL(false);
     const String keys =
                         "{help h usage ? |          | print this message            }"
                         "{@image         |          | image for edge detection      }"
@@ -46,7 +48,10 @@ int main(int argc, char *argv[])
     Mat image = imread(imageFile, IMREAD_GRAYSCALE);
     vector<Contour> contours;
     vector<Vec4i> hierarchy;
+    int64 t0 = getCPUTickCount();
     EdgesSubPix(image, alpha, low, high, contours, hierarchy, mode);
+    int64 t1 = getCPUTickCount();
+    cout << "execution time is " << (t1 - t0) / (double)getTickFrequency() << " seconds" << endl;
 
     if (parser.has("data"))
     {
