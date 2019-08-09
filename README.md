@@ -29,6 +29,12 @@ CV_EXPORTS void EdgesSubPix(cv::Mat &gray, double alpha, int low, int high,
                            std::vector<Contour> &contours);
 ```
 
+# Test
+
+```shell
+Edge --data=edge.yml avatar.jpg edge.jpg
+```
+
 # License
 
 3-clause BSD License

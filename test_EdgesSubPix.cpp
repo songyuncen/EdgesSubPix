@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
                         "{@image         |          | image for edge detection      }"
                         "{@output        |edge.tiff | image for draw contours       }"
                         "{data           |          | edges data in txt format      }"
-                        "{low            |40        | low threshold                 }"
-                        "{high           |100       | high threshold                }"
+                        "{low            |20        | low threshold                 }"
+                        "{high           |40        | high threshold                }"
                         "{mode           |1         | same as cv::findContours      }"
                         "{alpha          |1.0       | gaussian alpha              }";
     CommandLineParser parser(argc, argv, keys);
@@ -67,6 +67,23 @@ int main(int argc, char *argv[])
         }
         fs << "]";
         fs.release();
+    }
+
+    if (parser.has("@output")) {
+      cv::Mat colorImage;
+      cv::cvtColor(image, colorImage, COLOR_GRAY2BGR);
+      vector<vector<Point>> ocvContours;
+      for (size_t i = 0; i < contours.size(); ++i) {
+        vector<Point> pts;
+        pts.reserve(contours[i].points.size());
+        for (size_t j = 0; j < contours[i].points.size(); ++j) {
+          pts.push_back(contours[i].points[j]);
+        }
+        ocvContours.push_back(std::move(pts));
+      }
+
+      cv::drawContours(colorImage, ocvContours, -1, cv::Scalar(0, 255, 0));
+      cv::imwrite(parser.get<String>("@output"), colorImage);
     }
 
     return 0;
