@@ -74,12 +74,10 @@ int main(int argc, char *argv[])
       cv::cvtColor(image, colorImage, COLOR_GRAY2BGR);
       vector<vector<Point>> ocvContours;
       for (size_t i = 0; i < contours.size(); ++i) {
-        vector<Point> pts;
-        pts.reserve(contours[i].points.size());
-        for (size_t j = 0; j < contours[i].points.size(); ++j) {
-          pts.push_back(contours[i].points[j]);
-        }
-        ocvContours.push_back(std::move(pts));
+        cv::Mat pts(contours[i].points);
+        vector<Point> c;
+        pts.convertTo(c, CV_32S);
+        ocvContours.push_back(std::move(c));
       }
 
       cv::drawContours(colorImage, ocvContours, -1, cv::Scalar(0, 255, 0));
